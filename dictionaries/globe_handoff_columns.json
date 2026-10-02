@@ -1,0 +1,80 @@
+{
+  "_comment": "Column names and vocabularies as listed in PRD v0.1 section 3, transcribed from the Globe handoff dictionaries (00_README to 18, refreshed 14 and 30 Sep 2026). Replace this file with a direct export of the dictionary files in week 2; `python -m sdal check-schema` diffs every generated file against it (acceptance criterion 8).",
+  "tables": {
+    "fsm_repair_workorders": {
+      "source": "FSM / oWFM ALL STATUS",
+      "key": ["workordernumber"],
+      "columns": ["workordernumber", "serviceidnumber", "accountnumber", "technology", "skillset", "status", "substatus", "delaycode", "delayreason", "cancellationreason", "team", "faultcode", "findcode", "finddescription", "fixcode", "fixdescription", "FIXSEGMENT", "INVALID/VALID", "cabinetid", "lcpname", "dpid", "facilityname", "latitude", "longitude", "appointmentdate", "createdate", "lastupdatedate"],
+      "vocab": {
+        "skillset": ["Repair", "Install", "Migration"],
+        "status": ["Completed", "Cancelled", "Pending", "Delayed", "Open", "Ongoing", "Unassigned"],
+        "FIXSEGMENT": ["FIBERDROP TO NAP", "CUSTOMER PREMISE", "NETWORK/SYSTEM RELATED", "CUSTOMER RELATED", null],
+        "INVALID/VALID": ["INVALID", "VALID", null]
+      }
+    },
+    "snow_outage_nap": {
+      "source": "ServiceNow outage incidents, NAP-expanded",
+      "key": ["inc_number", "affected_nap"],
+      "columns": ["inc_number", "affected_nap", "ticket_created_datetime", "ticket_resolved_datetime", "latest_extract_datetime", "inc_state", "inc_u_service_impact", "inc_u_service_urgency", "impact_urgency", "service_affecting", "segment", "inc_u_reason_for_outage", "outage_reason", "inc_u_cause", "inc_short_description", "inc_assignment_group", "resolution_hours"],
+      "vocab": {
+        "inc_state": ["New", "In Progress", "On Hold", "Resolved", "Closed", "Cancelled"],
+        "outage_reason": ["EQUIPMENT ISSUE", "FIBER CUT", "POWER FAILURE [NON BATTERY]", "POWER FAILURE [BATTERY]", "COOLING ISSUE", "PILFERAGE", "OTHERS"]
+      }
+    },
+    "master_olt_lcp_nap": {
+      "source": "Topology master",
+      "key": ["NAP"],
+      "columns": ["OLT", "LCP", "NAP", "FIRST_SEEN_PERIOD", "LAST_SEEN_PERIOD", "FILES_SEEN_COUNT", "GRID_ID"],
+      "vocab": {}
+    },
+    "postpaid_base": {
+      "source": "Postpaid base",
+      "key": ["subscriber_id"],
+      "columns": ["subscriber_id", "service_id", "account_no", "acquisition_date", "prod_id", "prod_desc", "technology", "nap"],
+      "vocab": {"technology": ["GPON", "xDSL", "WIRELESS", "UNTAGGED"]}
+    },
+    "prepaid_base": {
+      "source": "Prepaid base",
+      "key": ["subscriber_id"],
+      "columns": ["subscriber_id", "service_id", "account_no", "acquisition_date", "prod_id", "prod_desc", "technology", "nap"],
+      "vocab": {"technology": ["GPON", "xDSL", "WIRELESS", "UNTAGGED"]}
+    },
+    "prod_id_mapping": {
+      "source": "Product mapping",
+      "key": ["prod_id"],
+      "columns": ["prod_id", "plan_name", "speed", "msf"],
+      "vocab": {}
+    },
+    "wms_gateway_telemetry": {
+      "source": "WMS gateway telemetry, 5-minute parquet",
+      "key": ["Gateway MAC Address", "Report Time"],
+      "columns": ["Gateway MAC Address", "Report Time", "Rx Optical Power", "Tx Optical Power", "Optical Module Bias Current", "Voltage", "Temperature", "Subnet Name Path"],
+      "vocab": {}
+    },
+    "wms_subscriber_keys": {
+      "source": "WMS subscriber keys",
+      "key": ["Gateway MAC Address"],
+      "columns": ["Gateway MAC Address", "Gateway SN", "Account Number", "Service ID", "NAP", "Barangay PSGC", "Town Name", "Province Name", "Territory Code"],
+      "vocab": {}
+    },
+    "handyman_diagnostic_log": {
+      "source": "Handyman diagnostic log",
+      "key": ["audit_no"],
+      "columns": ["audit_no", "account_number", "date_time", "channel", "diagnosis_template", "Result", "Diagnosis", "TDIndicator", "LineStatus", "ModemStatus", "PortStatus", "CabinetID", "Frame", "Slot", "Port", "modemSerial", "OutageResult", "SNOW Ticket Number", "Last Mile Status"],
+      "vocab": {
+        "diagnosis_template": ["FULL_DIAGNOSTIC", "ACCOUNT_STATUS", "SIMPLE_ACTION"],
+        "LineStatus": ["Account has no last mile issue", "Account has a last mile issue"],
+        "ModemStatus": ["Active", "Inactive/Modem not found"]
+      }
+    },
+    "nms_alarm_sample": {
+      "source": "NMS alarm sample (NTG)",
+      "key": ["alarm_id"],
+      "columns": ["alarm_id", "vendor", "ne_name", "alarm_name", "severity", "raised", "cleared"],
+      "vocab": {"vendor": ["FiberHome", "Huawei NCE", "Nokia Altiplano"]}
+    },
+    "outage_reason_mapping": {"source": "Code list", "key": ["code"], "columns": ["code", "outage_reason", "class"], "vocab": {}},
+    "repair_segment_mapping": {"source": "Code list", "key": ["code"], "columns": ["code", "FIXSEGMENT", "class"], "vocab": {}},
+    "repair_cohort_mapping": {"source": "Code list", "key": ["code"], "columns": ["code", "cohort", "class"], "vocab": {}}
+  }
+}

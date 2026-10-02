@@ -1,0 +1,174 @@
+{
+  "_comment": "SDAL Control Tower demo configuration. Every value here is a Gate 0 review item. Nothing in this file is a Globe figure.",
+  "demo_day": "2026-10-27",
+  "seed": 20261027,
+  "clock": {
+    "engine_start": "2026-10-26T22:30:00",
+    "replay_start": "2026-10-27T05:30:00",
+    "replay_end": "2026-10-27T08:40:00",
+    "telemetry_start": "2026-10-26T06:00:00",
+    "telemetry_end": "2026-10-27T09:00:00",
+    "detector_interval_min": 5,
+    "replay_speed_default": 10
+  },
+  "registry": {
+    "id_prefix": "SDAL-",
+    "seq_start": 405
+  },
+  "detectors": {
+    "ticket_burst_nap_min_orders": 3,
+    "ticket_burst_olt_min_orders": 10,
+    "ticket_burst_window_hours": 6,
+    "optical_drop_db": 6.0,
+    "optical_drop_min_share": 0.6,
+    "optical_baseline_hours": 24,
+    "reachability_min_share": 0.5,
+    "reachability_consecutive_intervals": 2,
+    "complaint_burst_min_checks": 3,
+    "complaint_burst_window_min": 60,
+    "flap_min_tickets": 2,
+    "flap_max_ticket_minutes": 15,
+    "flap_window_hours": 2,
+    "hourly_cycle_minute": 0
+  },
+  "support_score": {
+    "_comment": "Deterministic weighted sum. Shown as a support score, not a probability, until calibrated on adjudicated cases.",
+    "weights": {
+      "ticket_density": 0.28,
+      "physical_signal": 0.42,
+      "sibling_cleanliness": 0.25,
+      "alarm_presence": 0.05
+    },
+    "ticket_density_threshold": {
+      "NAP": 3,
+      "LCP": 5,
+      "OLT": 10
+    },
+    "propose_min_support": 0.6
+  },
+  "severity": {
+    "_comment": "Derived from element level and lines affected, following Globe's 5.x NAP-level versus 1 to 3 OLT-level framing. Exact cut-offs to confirm at Gate 0.",
+    "OLT": [
+      [
+        500,
+        "1"
+      ],
+      [
+        100,
+        "2"
+      ],
+      [
+        0,
+        "3"
+      ]
+    ],
+    "LCP": [
+      [
+        0,
+        "4"
+      ]
+    ],
+    "NAP": [
+      [
+        10,
+        "5.1"
+      ],
+      [
+        0,
+        "5.2"
+      ]
+    ],
+    "LINE": [
+      [
+        0,
+        "5.3"
+      ]
+    ]
+  },
+  "dispatch": {
+    "confidence_floor": 0.8,
+    "hold_hours_default": 2,
+    "stale_handyman_hours": 6,
+    "wrong_suppression_cost_ratio": 5,
+    "truck_roll_unit_cost": null,
+    "truck_roll_unit_cost_note": "Placeholder until Finance supplies a unit cost",
+    "line_hold_weights": {
+      "siblings_healthy": 0.4,
+      "gateway_silent": 0.3,
+      "silence_after_last_contact": 0.15,
+      "no_fresh_complaint": 0.15
+    },
+    "unavailable_check_penalty": 0.9,
+    "cpe_rx_tolerance_db": 3.0
+  },
+  "queue": {
+    "_comment": "S = w_t*min(t/6h,1.5) + w_l*log10(1+lines) + w_s*sev + w_v*vip + w_c*(1-crew). Demo defaults differ from PRD v0.1 brackets; see docs/DEVIATIONS.md D1.",
+    "weights": {
+      "w_t": 0.4,
+      "w_l": 0.1,
+      "w_s": 0.15,
+      "w_v": 0.0,
+      "w_c": 0.35
+    },
+    "prd_v01_weights": {
+      "w_t": 0.4,
+      "w_l": 0.25,
+      "w_s": 0.2,
+      "w_v": 0.0,
+      "w_c": 0.15
+    },
+    "vip_weight_if_enabled": 0.1,
+    "window_hours": 6,
+    "time_cap": 1.5,
+    "sev_values": {
+      "OLT": 1.0,
+      "LCP": 0.6,
+      "NAP": 0.3,
+      "LINE": 0.1
+    },
+    "rerank_every_min": 15
+  },
+  "notification": {
+    "quiet_hours": [
+      "22:00",
+      "07:00"
+    ],
+    "frequency_cap_hours": 2,
+    "next_update_hours_if_no_target": 2,
+    "update_trigger_hours": 2,
+    "language": "en"
+  },
+  "feeds": {
+    "_comment": "Expected arrival cadence per source. WMS half-hour batch landing at :10 and :40 is an assumption to confirm in week-2 profiling.",
+    "FSM": {
+      "label": "FSM / oWFM work orders",
+      "cadence_min": 5
+    },
+    "SNOW": {
+      "label": "ServiceNow outages",
+      "cadence_min": 15
+    },
+    "HANDYMAN": {
+      "label": "Handyman diagnostics",
+      "cadence_min": 5
+    },
+    "WMS": {
+      "label": "WMS optical telemetry",
+      "cadence_min": 30,
+      "batch_window_min": 30,
+      "landing_lag_min": 10
+    },
+    "ALARMS": {
+      "label": "NMS alarm sample",
+      "cadence_min": 5
+    }
+  },
+  "feed_stalls": [
+    {
+      "source": "HANDYMAN",
+      "from": "2026-10-27T06:42:00",
+      "to": "2026-10-27T06:57:00",
+      "scenario": 5
+    }
+  ]
+}
