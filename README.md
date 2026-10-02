@@ -44,10 +44,9 @@ npm run build                             # static site in web/dist, deployable 
 
 ### Deploy on Vercel
 
-The repo root has a `vercel.json` (install and build in `web/`, serve `web/dist`). Import the repo in
-Vercel and keep the project root as the repository root; no environment variables are needed. Or from
-a terminal: `npx vercel` (preview) and `npx vercel --prod`. The site is fully static. Turn on Vercel
-Deployment Protection if the link should not be public.
+Import the repo in Vercel and choose the **web** app (Root Directory `web`, Vite). `web/vercel.json`
+pins the install, build and output settings; no environment variables are needed. The site is fully
+static. Turn on Vercel Deployment Protection if the link should not be public.
 
 ## Acceptance criteria (PRD §12)
 
